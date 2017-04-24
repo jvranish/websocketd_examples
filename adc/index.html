@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="./smoothie.js"></script>
+    <script type="text/javascript">
+
+      var current = new TimeSeries();
+      
+      function createTimeline() {
+        var chart = new SmoothieChart();
+        chart.addTimeSeries(current, {
+          strokeStyle: 'rgba(0, 255, 0, 1)',
+          fillStyle: 'rgba(0, 255, 0, 0.2)',
+          lineWidth: 1 } );
+        chart.streamTo(document.getElementById("chart"), 10);
+      }
+
+      // setup websocket with callbacks
+      var ws = new WebSocket('ws://localhost:8080/');
+      ws.onmessage = function(event) {
+        var line = event.data; // get line from websocket event
+        current.append(new Date().getTime(), parseFloat(line));
+      };
+
+    </script>
+  </head>
+  <body onload="createTimeline()">
+    <p>Current meter:</p>
+    <canvas id="chart" width="800" height="300"></canvas>
+  </body>
+</html>

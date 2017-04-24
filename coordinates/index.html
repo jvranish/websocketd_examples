@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript">
+      function main() {
+        var tile = document.getElementById("tile");
+
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+
+        // setup websocket with callbacks
+        var ws = new WebSocket('ws://localhost:8080/');
+
+        ws.onmessage = function(event) {
+          var tile_size = 64;
+          var line = event.data;
+          try {
+            // parse out coordinates and draw a tiles at that position
+            var coords = line.split(",").map(parseFloat);
+            var x = (coords[0] + 5)*tile_size;
+            var y = (coords[1] + 5)*tile_size;
+            context.drawImage(tile, x, y);
+          }
+          catch (e) {
+            console.log(e);
+          }
+        };
+      }
+    </script>
+  </head>
+  <body onload="main()">
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <img src="./tile.png" id="tile" style="display: none;"/>
+  </body>
+</html>
