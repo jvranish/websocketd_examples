@@ -1,6 +1,8 @@
 # websocketd_examples
 A few examples of using websocketd to visualize output from a command line utility
 
+To run the examples, you'll need [http://websocketd.com](websocketd) and base installs of ruby and python.
+
 ## ADC readings charting example
 To try out the adc example:
 
